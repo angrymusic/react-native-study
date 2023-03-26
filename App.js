@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { theme } from "./color";
 
 export default function App() {
@@ -17,7 +17,7 @@ export default function App() {
         // const newTodo = Object.assign({}, todo, { [Date.now()]: { text: text, work: working } });
 
         // es6 ...사용
-        const newTodo = { ...todo, [Date.now()]: { text: text, work: working } }; 
+        const newTodo = { ...todo, [Date.now()]: { text: text, work: working } };
         setTodo(newTodo);
         setText("");
     };
@@ -40,6 +40,15 @@ export default function App() {
                 placeholder={working ? "무슨일 해야하니?!" : "어디로 여행가니?!"}
                 style={styles.input}
             ></TextInput>
+            <ScrollView>
+                {Object.keys(todo).map((key) =>
+                    working === todo[key].work ? (
+                        <View key={key} style={styles.todo}>
+                            <Text style={styles.todoText}>{todo[key].text}</Text>
+                        </View>
+                    ) : null
+                )}
+            </ScrollView>
         </View>
     );
 }
@@ -64,7 +73,19 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 15,
-        marginTop: 20,
+        marginVertical: 20,
         fontSize: 18,
+    },
+    todo: {
+        backgroundColor: theme.gray,
+        marginBottom: 10,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        borderRadius: 15,
+    },
+    todoText: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: 500,
     },
 });
